@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, createContext, useContext } from "react";
 type TUserContext = {
   token: string | null;
   setToken: Dispatch<SetStateAction<string | null>>;
+  logout: () => void;
 };
 
 export const UserContext = createContext<TUserContext | undefined>(undefined);

@@ -1,8 +1,18 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Button, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Link as ChakraLink,
+  useColorMode,
+} from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
+
+import { useUser } from "../contexts/userContext";
 
 const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { token, logout } = useUser();
   return (
     <Flex
       py={4}
@@ -14,11 +24,30 @@ const Nav = () => {
       <Heading as="h1" size="lg">
         Data Cleaner
       </Heading>
-      <div>
+      <Flex gap={3} align={"center"}>
+        {token ? (
+          <Flex gap={3} align={"center"}>
+            <ChakraLink as={ReactRouterLink} to="/">
+              Home
+            </ChakraLink>
+            <ChakraLink color="red.300" onClick={logout}>
+              Logout
+            </ChakraLink>
+          </Flex>
+        ) : (
+          <Flex gap={3} align={"center"}>
+            <ChakraLink as={ReactRouterLink} to="/login">
+              Login
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/signup">
+              Signup
+            </ChakraLink>
+          </Flex>
+        )}
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
         </Button>
-      </div>
+      </Flex>
     </Flex>
   );
 };
