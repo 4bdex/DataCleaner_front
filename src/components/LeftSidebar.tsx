@@ -11,7 +11,7 @@ const LeftSidebar = () => {
       direction={"column"}
       justify={"space-between"}
       height={"100%"}
-      width={"400px"}
+      width={"300px"}
       maxW={"30%"}
       overflow={"auto"}
       px={4}
