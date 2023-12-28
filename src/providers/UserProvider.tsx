@@ -6,17 +6,18 @@ const UserProvider = ({ children }: { children: ReactElement }) => {
   const logout = () => {
     setToken(null);
   };
+
+  const saveToken = (token: string) => {
+    localStorage.setItem("data cleaner user", token);
+    setToken(token);
+  };
   useEffect(() => {
     const storedToken = localStorage.getItem("data cleaner user");
     setToken(storedToken);
   }, []);
 
-  useEffect(() => {
-    if (!token) return;
-    localStorage.setItem("data cleaner user", token);
-  }, [token]);
   return (
-    <UserContext.Provider value={{ token, setToken, logout }}>
+    <UserContext.Provider value={{ token, setToken, logout, saveToken }}>
       {children}
     </UserContext.Provider>
   );

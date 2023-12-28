@@ -4,6 +4,7 @@ type TUserContext = {
   token: string | null;
   setToken: Dispatch<SetStateAction<string | null>>;
   logout: () => void;
+  saveToken: (token: string) => void;
 };
 
 export const UserContext = createContext<TUserContext | undefined>(undefined);

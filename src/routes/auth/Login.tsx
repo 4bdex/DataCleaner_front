@@ -34,7 +34,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
-  const { setToken } = useUser();
+  const { saveToken } = useUser();
   const {
     register,
     handleSubmit,
@@ -54,7 +54,7 @@ const Signup = () => {
 
       const response = await login({ email, password });
       console.log("response login success", response);
-      setToken(response.data.token);
+      saveToken(response.data.token);
       toast({
         title: "Login Success, redirecting you to dashboard",
         status: "success",
