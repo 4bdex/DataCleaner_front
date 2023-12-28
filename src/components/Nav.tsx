@@ -6,7 +6,7 @@ import {
   Link as ChakraLink,
   useColorMode,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link, Link as ReactRouterLink } from "react-router-dom";
 
 import { useUser } from "../contexts/userContext";
 
@@ -22,7 +22,7 @@ const Nav = () => {
       justify={"space-between"}
     >
       <Heading as="h1" size="lg">
-        Data Cleaner
+        <Link to={token ? "/dashboard" : "/"}>Data Cleaner</Link>
       </Heading>
       <Flex gap={3} align={"center"}>
         {token ? (
