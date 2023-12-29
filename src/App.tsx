@@ -6,12 +6,32 @@ import Dashboard from "./routes/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Home from "./routes/Home";
+import Datasets from "./routes/Datasets";
 
 function App() {
   return (
     <>
       <Nav />
       <Routes>
+        {/* private routes */}
+
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+          path="/dashboard"
+        />
+        <Route
+          element={
+            <PrivateRoute>
+              <Datasets />
+            </PrivateRoute>
+          }
+          path="/datasets"
+        />
+
         {/* public routes */}
         <Route
           element={
@@ -29,8 +49,6 @@ function App() {
           }
           path="/signup"
         />
-        {/* private routes */}
-
         <Route
           element={
             <PublicRoute>
@@ -38,14 +56,6 @@ function App() {
             </PublicRoute>
           }
           path="/"
-        />
-        <Route
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-          path="/dashboard"
         />
       </Routes>
     </>

@@ -4,7 +4,9 @@ import { Navigate } from "react-router-dom";
 
 const PublicRoute = ({ children }: { children: ReactElement }) => {
   const { token } = useUser();
-  return !token ? children : <Navigate to="/" />;
+  console.log("token in public route", token);
+
+  return !token ? children : <Navigate to="/dashboard" />;
 };
 
 export default PublicRoute;

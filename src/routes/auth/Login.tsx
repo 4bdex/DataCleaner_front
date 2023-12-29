@@ -26,8 +26,8 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { TLogin, loginValidation } from "../../utils/validations";
 import { login } from "../../api/user";
-import { AxiosError } from "axios";
 import { useUser } from "../../contexts/userContext";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -62,42 +62,12 @@ const Signup = () => {
       });
       navigate("/dashboard");
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        // Inside this block, err is known to be a ValidationError
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          toast({
-            title: error.response.data.message,
-            status: "error",
-            duration: 2500,
-          });
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          toast({
-            title: "No response from server",
-            status: "error",
-            duration: 2500,
-          });
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          toast({
-            title:
-              "Request has not been made, the server is down or you lost connection",
-            status: "error",
-            duration: 2500,
-          });
-          console.log("Error", error.message);
-        }
-      } else {
-        console.log(error);
-      }
+      const errorMsg = getErrorMessage(error);
+      toast({
+        title: errorMsg,
+        status: "error",
+        duration: 3000,
+      });
     } finally {
       setIsSubmitting(false);
     }

@@ -27,8 +27,11 @@ const Nav = () => {
       <Flex gap={3} align={"center"}>
         {token ? (
           <Flex gap={3} align={"center"}>
-            <ChakraLink as={ReactRouterLink} to="/">
-              Home
+            <ChakraLink as={ReactRouterLink} to="/dashboard">
+              Dashboard
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/datasets">
+              Datasets
             </ChakraLink>
             <ChakraLink color="red.300" onClick={logout}>
               Logout
