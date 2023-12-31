@@ -20,7 +20,7 @@ export const replaceString = async ({
     oldString,
     newString,
   });
-  return response;
+  return response.data;
 };
 
 // #removing special characters (dataset_id, column)
@@ -37,7 +37,7 @@ export const removeSpecialCharacters = async ({
     column,
   });
 
-  return response;
+  return response.data;
 };
 
 // # tokenize column data (dataset_id, column)
@@ -54,7 +54,7 @@ export const tokenizeColumnData = async ({
     column,
   });
 
-  return response;
+  return response.data;
 };
 
 // # remove stopwords (dataset_id, column, language) #language: english, french, german, spanish, arabic, russian
@@ -74,7 +74,7 @@ export const removeStopWords = async ({
     language,
   });
 
-  return response;
+  return response.data;
 };
 // stemming column data (dataset_id, column, language) #language: english, french, german, spanish, arabic, russian
 type StemmingParams = {
@@ -93,7 +93,7 @@ export const stemming = async ({
     language,
   });
 
-  return response;
+  return response.data;
 };
 // stemming column data (dataset_id, column, language) #language: english, french, german, spanish, arabic, russian
 type LemmatizationParams = {
@@ -109,7 +109,7 @@ export const lemmatization = async ({
     column,
   });
 
-  return response;
+  return response.data;
 };
 // # remove duplicate text (dataset_id, column) ## isnt working TODO
 type RemoveDuplicatesInRowParams = {
@@ -164,7 +164,7 @@ export const cleanWithCustomPatterns = async ({
     pattern,
   });
 
-  return response;
+  return response.data;
 };
 // # handle encoding issues (dataset_id, column, encoding,errors) #encoding: utf-8, ascii, latin-1,utf_16,utf_32 #errors: strict, ignore, replace,backslashreplace
 type HandleEncodingIssuesParams = {
@@ -186,7 +186,7 @@ export const handleEncodingIssues = async ({
     errors,
   });
 
-  return response;
+  return response.data;
 };
 
 // # remove whitespaces (dataset_id, column)
@@ -203,7 +203,7 @@ export const removeWhiteSpaces = async ({
     column,
   });
 
-  return response;
+  return response.data;
 };
 
 // # get text from html with beatifulsoup (dataset_id, column)
@@ -220,7 +220,7 @@ export const getTextFromHTML = async ({
     column,
   });
 
-  return response;
+  return response.data;
 };
 
 // # word embedding (dataset_id, column, embedding) #embedding: word2vec, TF-IDF, bag of words
@@ -240,5 +240,5 @@ export const wordEmbedding = async ({
     embedding,
   });
 
-  return response;
+  return response.data;
 };

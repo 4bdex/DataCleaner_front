@@ -4,29 +4,53 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Divider,
   Heading,
-  Text,
 } from "@chakra-ui/react";
-import React from "react";
+import {
+  DropNull,
+  LimiteValCol,
+  NumberReplacement,
+  ReplaceByAverage,
+  ReplaceByLogTransformation,
+  ReplaceByMedian,
+} from "./numeric-manipulations";
 
-const NumericManipulations = () => {
+const NumericManipulations = ({
+  datasetId,
+  columns,
+}: {
+  datasetId: string;
+  columns: string[];
+}) => {
   return (
-    <AccordionItem borderTopWidth={"3px"} borderBottomWidth={"3px"}>
+    <AccordionItem borderTopWidth={"3px"}>
       <h2>
         <AccordionButton px={0}>
           <Box as="span" flex="1" textAlign="left">
             <Heading size={"md"}>Numeric Manipulations</Heading>
           </Box>
-
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel px={0} pb={4}>
-        <Heading size={"md"}>Custom formula</Heading>
-        <Text>
-          Define a new column using a spark sql expression to query data in the
-          current dateframe
-        </Text>
+        <>
+          <DropNull datasetId={datasetId} columns={columns} />
+          <Divider my={3} />
+          <LimiteValCol datasetId={datasetId} columns={columns} />
+          <Divider my={3} />
+
+          <NumberReplacement datasetId={datasetId} columns={columns} />
+          <Divider my={3} />
+
+          <ReplaceByAverage datasetId={datasetId} columns={columns} />
+          <Divider my={3} />
+          <ReplaceByMedian datasetId={datasetId} columns={columns} />
+
+          <Divider my={3} />
+
+          <ReplaceByLogTransformation datasetId={datasetId} columns={columns} />
+        </>
       </AccordionPanel>
     </AccordionItem>
   );

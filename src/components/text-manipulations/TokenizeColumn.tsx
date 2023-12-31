@@ -35,10 +35,7 @@ const TokenizeColumn = ({ columns, datasetId }: TokenizeColumnProps) => {
         duration: 2500,
       });
 
-      setFormData({
-        selectedColumn: columns[0],
-      });
-      queryClient.invalidateQueries(["datasets", datasetId]);
+      queryClient.setQueryData(["datasets", datasetId], data.dataset);
     },
     onError: (error) => {
       console.log("tokenize column error", error);

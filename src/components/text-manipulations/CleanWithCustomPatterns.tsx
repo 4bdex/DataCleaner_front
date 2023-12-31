@@ -43,11 +43,12 @@ const CleanWithCustomPatterns = ({
         duration: 2500,
       });
 
-      setFormData({
-        selectedColumn: columns[0],
+      setFormData((prevFormData) => ({
+        ...prevFormData,
         pattern: "",
-      });
-      queryClient.invalidateQueries(["datasets", datasetId]);
+      }));
+
+      queryClient.setQueryData(["datasets", datasetId], data.dataset);
     },
     onError: (error) => {
       console.log("clean with custom patterns error", error);

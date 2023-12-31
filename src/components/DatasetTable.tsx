@@ -22,6 +22,7 @@ const DatasetTable = ({ datasetId }: { datasetId: string }) => {
     data: dataset,
     isLoading,
     isError,
+    isRefetching,
   } = useQuery({
     queryKey: ["datasets", datasetId],
     queryFn: () => getDataset({ datasetId, token }),
@@ -41,6 +42,11 @@ const DatasetTable = ({ datasetId }: { datasetId: string }) => {
       {isLoading && (
         <Alert>
           <Spinner /> Loading your dataset data
+        </Alert>
+      )}
+      {isRefetching && (
+        <Alert>
+          <Spinner /> Refetching your dataset data
         </Alert>
       )}
       {isError && (
@@ -64,7 +70,11 @@ const DatasetTable = ({ datasetId }: { datasetId: string }) => {
               {dataset.map((obj: any, index: number) => (
                 <Tr key={index}>
                   {Object.keys(obj).map((key) => (
-                    <Td key={key}>{obj[key]}</Td>
+                    <Td key={key}>
+                      {Array.isArray(obj[key])
+                        ? JSON.stringify(obj[key])
+                        : obj[key]}
+                    </Td>
                   ))}
                 </Tr>
               ))}

@@ -1,46 +1,56 @@
 import {
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Input,
   Select,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { removeWhiteSpaces } from "../../api/text";
+import { replaceNumber } from "../../api/number";
 
-type RemoveWhitespacesProps = {
+type NumberReplacementProps = {
   columns: string[];
   datasetId: string;
 };
-const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
+const NumberReplacement = ({ columns, datasetId }: NumberReplacementProps) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     selectedColumn: columns[0],
+    valeur: 0,
   });
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () =>
-      removeWhiteSpaces({
+      replaceNumber({
         column: formData.selectedColumn,
+        valeur: formData.valeur,
         datasetId,
       }),
     onSuccess: (data) => {
-      console.log("white spaces remove success", data);
+      console.log("replace by number success", data);
       toast({
-        title: "White spaces removed successfully",
+        title: `Replaced column cells with value:  ${formData.valeur} successfully`,
         status: "success",
         duration: 2500,
       });
 
-      queryClient.setQueryData(["datasets", datasetId], data.dataset);
+      setFormData({
+        selectedColumn: columns[0],
+        valeur: 0,
+      });
+      queryClient.invalidateQueries(["datasets", datasetId]);
     },
     onError: (error) => {
-      console.log("white spaces remove error", error);
+      console.log("replace by number error", error);
+
       toast({
-        title: "An error occurred while removing white spaces",
+        title: "An error occurred while replacing the column cells",
         status: "error",
         duration: 2500,
       });
@@ -49,7 +59,7 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   return (
     <>
       <Heading mb={3} size={"sm"}>
-        Remove whitespaces
+        Replace column cells with a numeric value
       </Heading>
       <Select
         onChange={(e) =>
@@ -67,7 +77,22 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
           </option>
         ))}
       </Select>
-      <Flex mt={2} justifyContent={"flex-end"}>
+      <Flex my={2} gap={3}>
+        <FormControl>
+          <FormLabel>Value</FormLabel>
+          <Input
+            size={"sm"}
+            value={formData.valeur}
+            onChange={(e) =>
+              setFormData((prevForm) => ({
+                ...prevForm,
+                valeur: +e.target.value,
+              }))
+            }
+          />
+        </FormControl>
+      </Flex>
+      <Flex justifyContent={"flex-end"}>
         <Button size="sm" isDisabled={isLoading} onClick={() => mutate()}>
           {isLoading ? <Spinner /> : "Apply"}
         </Button>
@@ -76,4 +101,4 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   );
 };
 
-export default RemoveWhitespaces;
+export default NumberReplacement;

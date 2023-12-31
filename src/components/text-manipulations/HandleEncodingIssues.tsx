@@ -48,12 +48,7 @@ const HandleEncodingIssues = ({
         duration: 2500,
       });
 
-      setFormData({
-        selectedColumn: columns[0],
-        encoding: encodingOptions[0],
-        errors: encodingErrorOptions[0],
-      });
-      queryClient.invalidateQueries(["datasets", datasetId]);
+      queryClient.setQueryData(["datasets", datasetId], data.dataset);
     },
     onError: (error) => {
       console.log("handle encoding issues error", error);

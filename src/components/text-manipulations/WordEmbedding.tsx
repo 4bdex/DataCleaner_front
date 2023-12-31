@@ -41,11 +41,7 @@ const WordEmbedding = ({ columns, datasetId }: WordEmbeddingProps) => {
         duration: 2500,
       });
 
-      setFormData({
-        selectedColumn: columns[0],
-        embedding: embeddingOptions[0],
-      });
-      queryClient.invalidateQueries(["datasets", datasetId]);
+      queryClient.setQueryData(["datasets", datasetId], data.dataset);
     },
     onError: (error) => {
       console.log("word embedding error", error);

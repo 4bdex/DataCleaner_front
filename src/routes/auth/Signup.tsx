@@ -169,7 +169,7 @@ const Signup = () => {
               )}
             </FormControl>
             <Button
-              disabled={isSubmitting}
+              isDisabled={isSubmitting}
               type="submit"
               mt={4}
               colorScheme="teal"

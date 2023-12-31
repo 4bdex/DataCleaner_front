@@ -8,13 +8,16 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { removeWhiteSpaces } from "../../api/text";
+import { replaceByLogTransformation } from "../../api/number";
 
-type RemoveWhitespacesProps = {
+type ReplaceByLogTransformationProps = {
   columns: string[];
   datasetId: string;
 };
-const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
+const ReplaceByLogTransformation = ({
+  columns,
+  datasetId,
+}: ReplaceByLogTransformationProps) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     selectedColumn: columns[0],
@@ -23,24 +26,27 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () =>
-      removeWhiteSpaces({
+      replaceByLogTransformation({
         column: formData.selectedColumn,
         datasetId,
       }),
     onSuccess: (data) => {
-      console.log("white spaces remove success", data);
+      console.log("replace by log transformation success", data);
       toast({
-        title: "White spaces removed successfully",
+        title: "Log transformation applied successfully",
         status: "success",
         duration: 2500,
       });
 
-      queryClient.setQueryData(["datasets", datasetId], data.dataset);
+      setFormData({
+        selectedColumn: columns[0],
+      });
+      queryClient.invalidateQueries(["datasets", datasetId]);
     },
     onError: (error) => {
-      console.log("white spaces remove error", error);
+      console.log("replace by log transformation error", error);
       toast({
-        title: "An error occurred while removing white spaces",
+        title: "An error occurred while applying log transformation",
         status: "error",
         duration: 2500,
       });
@@ -49,7 +55,7 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   return (
     <>
       <Heading mb={3} size={"sm"}>
-        Remove whitespaces
+        Apply log transformation to a column
       </Heading>
       <Select
         onChange={(e) =>
@@ -76,4 +82,4 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   );
 };
 
-export default RemoveWhitespaces;
+export default ReplaceByLogTransformation;

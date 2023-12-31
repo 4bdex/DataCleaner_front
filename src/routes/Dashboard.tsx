@@ -10,6 +10,7 @@ import {
   useToast,
   Badge,
   Alert,
+  Text,
 } from "@chakra-ui/react";
 import RightSidebar from "../components/RightSidebar";
 import { useState } from "react";
@@ -26,7 +27,7 @@ const Dashboard = () => {
   const [showAnalyses, setShowAnalyses] = useState(false);
   const { token } = useUser();
   const toast = useToast();
-  const { data: datasets } = useQuery({
+  const { data: datasets, isLoading } = useQuery({
     queryKey: ["datasets"],
     queryFn: () => getUserDatasets({ token }),
     onError: (error) => {
@@ -50,6 +51,8 @@ const Dashboard = () => {
     <Flex height={"calc(100vh - 74px)"} p={3} gap={4}>
       <Box overflow={"auto"} as="main" width={"70%"}>
         <Flex gap={4} flexWrap={"wrap"} alignItems={"center"}>
+          {isLoading && <Alert>Loading your datasets list</Alert>}
+
           {selectedDataset ? (
             <Select
               width={"50%"}
@@ -112,10 +115,14 @@ const Dashboard = () => {
           </Tabs>
         </Box>
       </Box>
-      <RightSidebar
-        showAnalyses={showAnalyses}
-        datasetId={selectedDataset?._id}
-      />
+      {selectedDataset?._id ? (
+        <RightSidebar
+          showAnalyses={showAnalyses}
+          datasetId={selectedDataset._id}
+        />
+      ) : (
+        <Text>No dataset selected</Text>
+      )}
     </Flex>
   );
 };

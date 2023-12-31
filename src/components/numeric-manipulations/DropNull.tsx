@@ -8,13 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { removeWhiteSpaces } from "../../api/text";
+import { dropNull } from "../../api/number";
 
-type RemoveWhitespacesProps = {
+type DropNullProps = {
   columns: string[];
   datasetId: string;
 };
-const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
+const DropNull = ({ columns, datasetId }: DropNullProps) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     selectedColumn: columns[0],
@@ -23,24 +23,27 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () =>
-      removeWhiteSpaces({
+      dropNull({
         column: formData.selectedColumn,
         datasetId,
       }),
     onSuccess: (data) => {
-      console.log("white spaces remove success", data);
+      console.log("drop null success", data);
       toast({
-        title: "White spaces removed successfully",
+        title: "Dropped rows with missing values successfully",
         status: "success",
         duration: 2500,
       });
 
-      queryClient.setQueryData(["datasets", datasetId], data.dataset);
+      setFormData({
+        selectedColumn: columns[0],
+      });
+      queryClient.invalidateQueries(["datasets", datasetId]);
     },
     onError: (error) => {
-      console.log("white spaces remove error", error);
+      console.log("drop null error", error);
       toast({
-        title: "An error occurred while removing white spaces",
+        title: "An error occurred while dropping rows with null values",
         status: "error",
         duration: 2500,
       });
@@ -49,7 +52,7 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   return (
     <>
       <Heading mb={3} size={"sm"}>
-        Remove whitespaces
+        Drop rows with missing values in a certain column
       </Heading>
       <Select
         onChange={(e) =>
@@ -76,4 +79,4 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   );
 };
 
-export default RemoveWhitespaces;
+export default DropNull;

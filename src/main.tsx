@@ -8,19 +8,25 @@ import { BrowserRouter } from "react-router-dom";
 import theme from "./theme.ts";
 import UserProvider from "./providers/UserProvider.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ChakraProvider>
-        <QueryClientProvider client={queryClient}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <UserProvider>
+    <UserProvider>
+      <BrowserRouter>
+        <ChakraProvider>
+          <QueryClientProvider client={queryClient}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
             <App />
-          </UserProvider>
-        </QueryClientProvider>
-      </ChakraProvider>
-    </BrowserRouter>
+          </QueryClientProvider>
+        </ChakraProvider>
+      </BrowserRouter>
+    </UserProvider>
   </React.StrictMode>
 );

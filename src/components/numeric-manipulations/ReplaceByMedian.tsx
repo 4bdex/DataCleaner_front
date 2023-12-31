@@ -8,13 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { removeWhiteSpaces } from "../../api/text";
+import { replaceByMedian } from "../../api/number";
 
-type RemoveWhitespacesProps = {
+type ReplaceByMedianProps = {
   columns: string[];
   datasetId: string;
 };
-const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
+const ReplaceByMedian = ({ columns, datasetId }: ReplaceByMedianProps) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     selectedColumn: columns[0],
@@ -23,24 +23,27 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () =>
-      removeWhiteSpaces({
+      replaceByMedian({
         column: formData.selectedColumn,
         datasetId,
       }),
     onSuccess: (data) => {
-      console.log("white spaces remove success", data);
+      console.log("replace by median success", data);
       toast({
-        title: "White spaces removed successfully",
+        title: "Replaced column by its median successfully",
         status: "success",
         duration: 2500,
       });
 
-      queryClient.setQueryData(["datasets", datasetId], data.dataset);
+      setFormData({
+        selectedColumn: columns[0],
+      });
+      queryClient.invalidateQueries(["datasets", datasetId]);
     },
     onError: (error) => {
-      console.log("white spaces remove error", error);
+      console.log("replace by median error", error);
       toast({
-        title: "An error occurred while removing white spaces",
+        title: "An error occurred while replacing column by its median",
         status: "error",
         duration: 2500,
       });
@@ -49,7 +52,7 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   return (
     <>
       <Heading mb={3} size={"sm"}>
-        Remove whitespaces
+        Replace column by its median
       </Heading>
       <Select
         onChange={(e) =>
@@ -76,4 +79,4 @@ const RemoveWhitespaces = ({ columns, datasetId }: RemoveWhitespacesProps) => {
   );
 };
 
-export default RemoveWhitespaces;
+export default ReplaceByMedian;

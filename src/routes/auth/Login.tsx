@@ -77,7 +77,7 @@ const Signup = () => {
     <Flex p={4} align={"center"} justify={"center"} minH={"calc(100vh - 74px)"}>
       <Card>
         <CardHeader>
-          <Heading size="md">Signup</Heading>
+          <Heading size="md">Login</Heading>
         </CardHeader>
 
         <CardBody>
@@ -117,7 +117,7 @@ const Signup = () => {
             </FormControl>
 
             <Button
-              disabled={isSubmitting}
+              isDisabled={isSubmitting}
               type="submit"
               mt={4}
               colorScheme="teal"

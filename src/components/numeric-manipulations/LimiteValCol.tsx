@@ -11,50 +11,49 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { replaceString } from "../../api/text";
+import { limiteValCol } from "../../api/number";
 
-type StringReplacementProps = {
+type LimiteValColProps = {
   columns: string[];
   datasetId: string;
 };
-const StringReplacement = ({ columns, datasetId }: StringReplacementProps) => {
+const LimiteValCol = ({ columns, datasetId }: LimiteValColProps) => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     selectedColumn: columns[0],
-    oldString: "",
-    newString: "",
+    valeur1: 0,
+    valeur2: 0,
   });
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () =>
-      replaceString({
+      limiteValCol({
         column: formData.selectedColumn,
-        oldString: formData.oldString,
-        newString: formData.newString,
+        valeur1: formData.valeur1,
+        valeur2: formData.valeur2,
         datasetId,
       }),
     onSuccess: (data) => {
-      console.log("string replace success", data);
+      console.log("limite val col success", data);
       toast({
-        title: "String was replaced successfully",
+        title: `Column values limited between ${formData.valeur1} and ${formData.valeur2}  successfully`,
         status: "success",
         duration: 2500,
       });
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        oldString: "",
-        newString: "",
-      }));
-
-      queryClient.setQueryData(["datasets", datasetId], data.dataset);
+      setFormData({
+        selectedColumn: columns[0],
+        valeur1: 0,
+        valeur2: 0,
+      });
+      queryClient.invalidateQueries(["datasets", datasetId]);
     },
     onError: (error) => {
-      console.log("string replace error", error);
+      console.log("limite val col error", error);
 
       toast({
-        title: "An error occurred while replacing your string",
+        title: "An error occurred while limiting the column values",
         status: "error",
         duration: 2500,
       });
@@ -63,7 +62,7 @@ const StringReplacement = ({ columns, datasetId }: StringReplacementProps) => {
   return (
     <>
       <Heading mb={3} size={"sm"}>
-        String replacement
+        Limite column values between two values
       </Heading>
       <Select
         onChange={(e) =>
@@ -83,27 +82,27 @@ const StringReplacement = ({ columns, datasetId }: StringReplacementProps) => {
       </Select>
       <Flex my={2} gap={3}>
         <FormControl>
-          <FormLabel>Old string</FormLabel>
+          <FormLabel>Value 1</FormLabel>
           <Input
             size={"sm"}
-            value={formData.oldString}
+            value={formData.valeur1}
             onChange={(e) =>
               setFormData((prevForm) => ({
                 ...prevForm,
-                oldString: e.target.value,
+                valeur1: +e.target.value,
               }))
             }
           />
         </FormControl>
         <FormControl>
-          <FormLabel>New string</FormLabel>
+          <FormLabel>Value 2</FormLabel>
           <Input
             size={"sm"}
-            value={formData.newString}
+            value={formData.valeur2}
             onChange={(e) =>
               setFormData((prevForm) => ({
                 ...prevForm,
-                newString: e.target.value,
+                valeur2: +e.target.value,
               }))
             }
           />
@@ -118,4 +117,4 @@ const StringReplacement = ({ columns, datasetId }: StringReplacementProps) => {
   );
 };
 
-export default StringReplacement;
+export default LimiteValCol;
