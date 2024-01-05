@@ -1,4 +1,12 @@
-import { Alert, Box, Flex, Heading, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Alert,
+  Box,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { useUser } from "../contexts/userContext";
 import DatasetCard from "../components/DatasetCard";
 import UploadDataset from "../components/UploadDataset";
@@ -22,7 +30,20 @@ const Datasets = () => {
       });
     },
   });
-
+  if (isLoadingDatasets) {
+    <Box p={3}>
+      <Flex mb={5} justifyContent={"space-between"} alignItems={"center"}>
+        <Heading>Datasets</Heading>
+        <UploadDataset />
+      </Flex>
+      <Flex flexWrap={"wrap"} gap={3}>
+        <Alert status="info">
+          <Spinner />
+          <Text>Loading your datasets</Text>
+        </Alert>
+      </Flex>
+    </Box>;
+  }
   return (
     <Box p={3}>
       <Flex mb={5} justifyContent={"space-between"} alignItems={"center"}>
@@ -33,12 +54,7 @@ const Datasets = () => {
         {/* {isRefetching && (
           <Alert status="info">Refetching your datasets...</Alert>
         )} */}
-        {isLoadingDatasets ? (
-          <Alert status="info">
-            <Spinner />
-            Loading your datasets
-          </Alert>
-        ) : datasets.length > 0 ? (
+        {datasets?.length > 0 ? (
           datasets.map((dataset: TDataset) => (
             <DatasetCard key={dataset._id} dataset={dataset} />
           ))

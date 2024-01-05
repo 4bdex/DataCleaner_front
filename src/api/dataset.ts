@@ -59,3 +59,19 @@ export const getDataset = async ({ datasetId, token }: GetDatasetParams) => {
   });
   return response.data;
 };
+
+type ExportDatasetParams = {
+  datasetId: string;
+  fileType: string;
+};
+
+export const exportDataset = async ({
+  datasetId,
+  fileType,
+}: ExportDatasetParams) => {
+  const response = await axios.post("/export_dataset", {
+    dataset_id: datasetId,
+    file_type: fileType,
+  });
+  return response.data;
+};

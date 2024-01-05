@@ -19,6 +19,7 @@ import { getUserDatasets } from "../api/dataset";
 import { useQuery } from "react-query";
 import { TDataset } from "../types/Dataset";
 import DatasetTable from "../components/DatasetTable";
+import ExportDataset from "../components/ExportDataset";
 
 const Dashboard = () => {
   // const location = useLocation();
@@ -46,48 +47,64 @@ const Dashboard = () => {
   });
 
   const [selectedDataset, setSelectedDataset] = useState<TDataset | null>(null);
-
+  if (isLoading) {
+    return <Alert>Loading your datasets list</Alert>;
+  }
   return (
     <Flex height={"calc(100vh - 74px)"} p={3} gap={4}>
       <Box overflow={"auto"} as="main" width={"70%"}>
-        <Flex gap={4} flexWrap={"wrap"} alignItems={"center"}>
-          {isLoading && <Alert>Loading your datasets list</Alert>}
-
+        <div>
           {selectedDataset ? (
-            <Select
-              width={"50%"}
-              value={selectedDataset._id}
-              onChange={(e) =>
-                setSelectedDataset(
-                  datasets.find(
-                    (dataset: TDataset) => dataset._id == e.target.value
-                  )
-                )
-              }
+            <Flex
+              gap={4}
+              flexWrap={"wrap"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              pe={3}
             >
-              {datasets.map((dataset: TDataset) => (
-                <option key={dataset._id} value={dataset._id}>
-                  {dataset.dataset_name}
-                </option>
-              ))}
-            </Select>
+              <Flex
+                flexGrow={1}
+                gap={4}
+                flexWrap={"wrap"}
+                alignItems={"center"}
+              >
+                <Select
+                  width={"50%"}
+                  value={selectedDataset._id}
+                  onChange={(e) =>
+                    setSelectedDataset(
+                      datasets.find(
+                        (dataset: TDataset) => dataset._id == e.target.value
+                      )
+                    )
+                  }
+                >
+                  {datasets.map((dataset: TDataset) => (
+                    <option key={dataset._id} value={dataset._id}>
+                      {dataset.dataset_name}
+                    </option>
+                  ))}
+                </Select>
+                <Flex width={"30%"} gap={4} flexWrap={"wrap"}>
+                  <Badge px={2} py={1} borderRadius={"10px"}>
+                    Size: {selectedDataset.size}
+                  </Badge>
+                  <Badge px={2} py={1} borderRadius={"10px"}>
+                    Columns: {selectedDataset.columns}
+                  </Badge>
+                </Flex>
+              </Flex>
+              <ExportDataset
+                datasetId={selectedDataset._id}
+                fileType={selectedDataset.dataset_name.split(".")[1]}
+              />
+            </Flex>
           ) : (
             <Select width={"50%"} isReadOnly value="default">
               <option value="default">...</option>
             </Select>
           )}
-
-          {selectedDataset && (
-            <Flex width={"30%"} gap={4} flexWrap={"wrap"}>
-              <Badge px={2} py={1} borderRadius={"10px"}>
-                Size: {selectedDataset.size}
-              </Badge>
-              <Badge px={2} py={1} borderRadius={"10px"}>
-                Columns: {selectedDataset.columns}
-              </Badge>
-            </Flex>
-          )}
-        </Flex>
+        </div>
         <Box>
           <Tabs>
             <TabList>
