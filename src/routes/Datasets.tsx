@@ -18,7 +18,11 @@ const Datasets = () => {
   const toast = useToast();
   const { token } = useUser();
 
-  const { data: datasets, isLoading: isLoadingDatasets } = useQuery({
+  const {
+    data: datasets,
+    isLoading: isLoadingDatasets,
+    isRefetching,
+  } = useQuery({
     queryKey: ["datasets"],
     queryFn: () => getUserDatasets({ token }),
     onError: (error) => {
@@ -44,6 +48,7 @@ const Datasets = () => {
       </Flex>
     </Box>;
   }
+
   return (
     <Box p={3}>
       <Flex mb={5} justifyContent={"space-between"} alignItems={"center"}>
@@ -51,16 +56,16 @@ const Datasets = () => {
         <UploadDataset />
       </Flex>
       <Flex flexWrap={"wrap"} gap={3}>
-        {/* {isRefetching && (
+        {isRefetching && (
           <Alert status="info">Refetching your datasets...</Alert>
-        )} */}
+        )}
         {datasets?.length > 0 ? (
           datasets.map((dataset: TDataset) => (
             <DatasetCard key={dataset._id} dataset={dataset} />
           ))
         ) : (
           <Alert status="info">
-            You have 0 datasets, try adding some by click the button 'Add
+            You have 0 datasets, try adding some by click the button 'Upload
             Dataset'
           </Alert>
         )}

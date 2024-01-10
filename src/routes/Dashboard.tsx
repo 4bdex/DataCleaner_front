@@ -11,6 +11,7 @@ import {
   Badge,
   Alert,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import RightSidebar from "../components/RightSidebar";
 import { useState } from "react";
@@ -28,7 +29,11 @@ const Dashboard = () => {
   const [showAnalyses, setShowAnalyses] = useState(false);
   const { token } = useUser();
   const toast = useToast();
-  const { data: datasets, isLoading } = useQuery({
+  const {
+    data: datasets,
+    isLoading,
+    isRefetching,
+  } = useQuery({
     queryKey: ["datasets"],
     queryFn: () => getUserDatasets({ token }),
     onError: (error) => {
@@ -43,12 +48,26 @@ const Dashboard = () => {
       console.log("datasets", datasets);
       setSelectedDataset(datasets[0]);
     },
+    refetchOnMount: "always",
+
     refetchOnWindowFocus: false,
   });
 
   const [selectedDataset, setSelectedDataset] = useState<TDataset | null>(null);
   if (isLoading) {
-    return <Alert>Loading your datasets list</Alert>;
+    return (
+      <Alert>
+        <Spinner />
+        Loading your datasets list
+      </Alert>
+    );
+  }
+  if (isRefetching) {
+    return (
+      <Alert>
+        <Spinner /> Refetching your datasets list
+      </Alert>
+    );
   }
   return (
     <Flex height={"calc(100vh - 74px)"} p={3} gap={4}>
