@@ -57,7 +57,9 @@ const Datasets = () => {
       </Flex>
       <Flex flexWrap={"wrap"} gap={3}>
         {isRefetching && (
-          <Alert status="info">Refetching your datasets...</Alert>
+          <Alert status="info">
+            <Spinner /> Refetching your datasets list...
+          </Alert>
         )}
         {datasets?.length > 0 ? (
           datasets.map((dataset: TDataset) => (
