@@ -5,10 +5,16 @@ import { exportDataset } from "../api/dataset";
 type ExportDatasetProps = {
   datasetId: string;
   fileType: string;
+  datasetName: string;
 };
 
-const ExportDataset = ({ datasetId, fileType }: ExportDatasetProps) => {
+const ExportDataset = ({
+  datasetId,
+  fileType,
+  datasetName,
+}: ExportDatasetProps) => {
   console.log("file type", fileType);
+  console.log("datasetId", datasetId);
 
   const toast = useToast();
   const { mutate, isLoading } = useMutation({
@@ -21,7 +27,7 @@ const ExportDataset = ({ datasetId, fileType }: ExportDatasetProps) => {
       // Set the URL to the blob
       downloadLink.href = window.URL.createObjectURL(blob);
       // Set the filename for the downloaded file
-      downloadLink.download = `exported_dataset.csv`;
+      downloadLink.download = `${datasetName}.csv`;
       // Simulate click on the anchor to trigger download
       downloadLink.click();
       // Clean up by revoking the object URL

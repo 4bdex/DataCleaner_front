@@ -95,6 +95,7 @@ const Dashboard = () => {
                 </Flex>
               </Flex>
               <ExportDataset
+                datasetName={selectedDataset.dataset_name.split(".")[0]}
                 datasetId={selectedDataset._id}
                 fileType={selectedDataset.dataset_name.split(".")[1]}
               />

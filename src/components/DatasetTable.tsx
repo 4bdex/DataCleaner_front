@@ -16,7 +16,6 @@ import getDatasetColumns from "../utils/getDatasetColumns";
 
 const DatasetTable = ({ datasetId }: { datasetId: string }) => {
   const { token } = useUser();
-  console.log("dataset id to query", datasetId);
 
   const {
     data: dataset,
