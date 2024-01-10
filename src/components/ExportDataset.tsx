@@ -17,7 +17,7 @@ const ExportDataset = ({ datasetId, fileType }: ExportDatasetProps) => {
     onError: (error) => {
       console.log("export error", error);
       toast({
-        title: "Error occured while exporting your dataset",
+        title: "Error occured while exporting your dataset!!",
         duration: 2500,
         status: "error",
       });
